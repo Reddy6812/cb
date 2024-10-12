@@ -1,13 +1,13 @@
 from flask import Flask, request, jsonify
 from openai import OpenAI
 
-client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
 import os
 
 app = Flask(__name__)
 
 # Get the OpenAI API key from environment variable
-
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 # Root route to display a welcome message
 @app.route('/')
 def index():
