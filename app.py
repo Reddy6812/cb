@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 import os
 
 app = Flask(__name__)
 
 # Get the OpenAI API key from environment variable
-openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Root route to display a welcome message
 @app.route('/')
@@ -21,14 +22,12 @@ def chat():
 
     # Generate a response using OpenAI's ChatCompletion with the latest model
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": user_input}
-            ]
-        )
-        return jsonify({"response": response['choices'][0]['message']['content'].strip()})
+        response = client.chat.completions.create(model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": user_input}
+        ])
+        return jsonify({"response": response.choices[0].message.content.strip()})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
