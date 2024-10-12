@@ -19,14 +19,16 @@ def chat():
     if not user_input:
         return jsonify({"error": "No message provided"}), 400
 
-    # Generate a response using OpenAI's GPT-3.5 model
+    # Generate a response using OpenAI's ChatCompletion with the latest model
     try:
-        response = openai.Completion.create(
-            engine="text-davinci-003",
-            prompt=user_input,
-            max_tokens=150
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_input}
+            ]
         )
-        return jsonify({"response": response.choices[0].text.strip()})
+        return jsonify({"response": response['choices'][0]['message']['content'].strip()})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
