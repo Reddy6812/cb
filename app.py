@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+import openai
 from openai import OpenAI
 
 
@@ -11,7 +12,8 @@ client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 # Root route to display a welcome message
 @app.route('/')
 def index():
-    return "Welcome to the Chatbot API. Use the /chat endpoint to interact with the chatbot."
+    return render_template('index.html')
+    # return "Welcome to the Chatbot API. Use the /chat endpoint to interact with the chatbot."
 
 # Route for chatbot interaction
 @app.route('/chat', methods=['POST'])
